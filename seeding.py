@@ -22,7 +22,7 @@ def seed_dead_magnet_links(magnet_links, save_path):
 
             # Wait for the torrent to start
             print("Starting the torrent...")
-            for i in range(60):  # Wait for 60 seconds
+            for i in range(3600):  # Wait for 60 seconds
                 s = torrent_handle.status()
                 print(f"Progress: {s.progress * 100:.2f}%, State: {s.state}, Peers: {s.num_peers}, "
                       f"Total Downloaded: {s.total_download / (1024 * 1024):.2f} MB, "
