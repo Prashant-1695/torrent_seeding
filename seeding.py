@@ -13,18 +13,20 @@ def seed_dead_magnet_links(magnet_links, save_path):
 
     for magnet in magnet_links:
         print(f"Attempting to seed: {magnet}")
+
         try:
             # Parse the magnet link into add_torrent_params
             params = lt.parse_magnet_uri(magnet)
             params.save_path = save_path  # Set the save path
-
             torrent_handle = session.add_torrent(params)
 
             # Wait for the torrent to start
             print("Starting the torrent...")
-            for i in range(30):  # Wait for 30 seconds
+            for i in range(60):  # Wait for 60 seconds
                 s = torrent_handle.status()
-                print(f"Progress: {s.progress * 100:.2f}%, State: {s.state}, Peers: {s.num_peers}")
+                print(f"Progress: {s.progress * 100:.2f}%, State: {s.state}, Peers: {s.num_peers}, "
+                      f"Total Downloaded: {s.total_download / (1024 * 1024):.2f} MB, "
+                      f"Total Uploaded: {s.total_upload / (1024 * 1024):.2f} MB")
                 time.sleep(1)
 
             # Check if the torrent is seeding
@@ -44,5 +46,4 @@ if __name__ == "__main__":
 
     # Set your desired save path for the downloaded files
     save_path = "./torrents"
-
     seed_dead_magnet_links(dead_magnet_links, save_path)
